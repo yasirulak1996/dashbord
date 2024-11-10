@@ -4,27 +4,21 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '../../context/AuthContext';
 
-const Login: React.FC = () => {
+const Login = () => {
+  const { login } = useAuth();
   const router = useRouter();
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [errors, setErrors] = useState<string>('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-
-    // Hardcoded credentials for demonstration purposes
-    const validEmail = '123@gmail.com';
-    const validPassword = 'y123@';
-
-    // Simple validation check
-    if (email === validEmail && password === validPassword) {
-      // Set a token or flag in localStorage to simulate logged-in state
-      localStorage.setItem('isAuthenticated', 'true');
-      router.push('/pages/Dashboard'); // Redirect to dashboard on success
+    if (login(username, password)) {
+      router.push('/dashboard'); // Redirects to dashboard on successful login
     } else {
-      setErrors('Invalid email or password');
+      setError("Invalid username or password");
     }
   };
 
@@ -33,18 +27,18 @@ const Login: React.FC = () => {
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-center text-blue-600">Login</h2>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleLogin} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email
+            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+              Username
             </label>
             <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className="w-full px-3 py-2 mt-1 border rounded-md focus:ring-2 focus:ring-blue-400"
-              placeholder="Enter your email"
+              placeholder="Enter your username"
             />
           </div>
 
@@ -62,7 +56,7 @@ const Login: React.FC = () => {
             />
           </div>
 
-          {errors && <p className="text-red-500 text-sm">{errors}</p>}
+          {error && <p className="text-red-500 text-sm">{error}</p>}
 
           <button
             type="submit"

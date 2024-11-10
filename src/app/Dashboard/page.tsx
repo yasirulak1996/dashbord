@@ -1,7 +1,6 @@
-
-
 import React from 'react';
 import Link from 'next/link';
+
 
 export default function Dashboard() {
 
@@ -16,6 +15,7 @@ export default function Dashboard() {
       
       // uda dekama kelinma backend ekath ekka connect kaleki neeh
   return (
+    
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
       <aside className="w-64 bg-blue-900 text-white p-5">
